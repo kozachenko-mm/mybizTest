@@ -51,9 +51,11 @@ table {
     th[data-order="1"]::after {
         content: "▲";
         padding-left: 5px;
+        color: red;
         
     }
     th[data-order="-1"]::after {
         content: "▼";
         padding-left: 5px;
+        color: green;
     }

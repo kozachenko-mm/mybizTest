@@ -1,6 +1,8 @@
+"use strict";
+
 function fillTestData() {
-  let keys = ["date", "number", "string"];
-  let data = [];
+  const keys = ["date", "number", "string"];
+  const data = [];
   let getRand = (min, max) => Math.floor(Math.random() * (max - min)) + min;
   let randDate = () =>
     new Date(Math.floor(now + Math.random() * (end_date - now))).toISOString();
@@ -61,8 +63,6 @@ function createTableBody() {
   table.append(tBody);
 }
 
-//
-
 function sortTable({ target }) {
   const body = document.querySelector("tbody");
   const order = tHead.querySelectorAll("th");
@@ -78,52 +78,32 @@ function sortTable({ target }) {
 
   body.remove();
 
-  if (target.dataset.order == -1) {
-    switch (target.classList[0]) {
-      case "date":
-        tableData.data.sort((a, b) => {
-          dateA = new Date(a[0]);
-          dateB = new Date(b[0]);
-          return dateB - dateA;
-        });
-        break;
+  switch (target.classList[0]) {
+    case "date":
+      tableData.data.sort((a, b) => {
+        dateA = new Date(a[0]);
+        dateB = new Date(b[0]);
+        return target.dataset.order == -1 ? dateB - dateA : dateA - dateB;
+      });
+      break;
 
-      case "number":
-        tableData.data.sort((a, b) => b[1] - a[1]);
-        break;
+    case "number":
+      tableData.data.sort((a, b) =>
+        target.dataset.order == -1 ? b[1] - a[1] : a[1] - b[1]
+      );
+      break;
 
-      case "string":
-        tableData.data.sort((a, b) => {
-          const nameA = a[2].toLowerCase(),
-            nameB = b[2].toLowerCase();
-          if (nameA > nameB) return -1;
-          return 0;
-        });
-        break;
-    }
-  } else {
-    switch (target.classList[0]) {
-      case "date":
-        tableData.data.sort((a, b) => {
-          dateA = new Date(a[0]);
-          dateB = new Date(b[0]);
-          return dateA - dateB;
-        });
-        break;
-
-      case "number":
-        tableData.data.sort((a, b) => a[1] - b[1]);
-        break;
-
-      case "string":
-        tableData.data.sort((a, b) => {
-          const nameA = a[2].toLowerCase(),
-            nameB = b[2].toLowerCase();
-          if (nameA < nameB) return -1;
-          return 0;
-        });
-        break;
-    }
+    case "string":
+      tableData.data.sort((a, b) => {
+        const nameA = a[2].toLowerCase(),
+          nameB = b[2].toLowerCase();
+        if (target.dataset.order == -1) {
+          if (nameB < nameA) return -1;
+        } else {
+          if (nameB > nameA) return -1;
+        }
+      });
+      break;
   }
 
   createTableBody();
