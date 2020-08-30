@@ -81,8 +81,9 @@ function sortTable({ target }) {
   switch (target.classList[0]) {
     case "date":
       tableData.data.sort((a, b) => {
-        dateA = new Date(a[0]);
-        dateB = new Date(b[0]);
+        const dateA = new Date(a[0]);
+        const dateB = new Date(b[0]);
+        console.log(dateA)
         return target.dataset.order == -1 ? dateB - dateA : dateA - dateB;
       });
       break;
